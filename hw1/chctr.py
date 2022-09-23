@@ -29,7 +29,10 @@ def chctrEXPON(img, a, b):
 	resIMG = Image.new("L", (row, col))
 	for x in range(1, row):
 		for y in range(1, col):
-			val = math.exp(a * img.getpixel((x, y)) + b)
+			try:
+				val = math.exp(a * img.getpixel((x, y)) + b)
+			except OverflowError:
+				val = 255
 			if val >= 255:
 				val = 255
 			resIMG.putpixel((x, y), int(val))
