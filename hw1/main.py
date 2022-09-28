@@ -11,6 +11,7 @@ def main():
 	filemenu = tkinter.Menu(menubar)
 	filemenu.add_command(label = "Open", command = lambda: canv.Open())
 	filemenu.add_command(label = "Save", command = lambda: canv.Save())
+	filemenu.add_command(label = "SaveAs", command = lambda: canv.SaveAs())
 	
 	editmenu = tkinter.Menu(menubar)
 	

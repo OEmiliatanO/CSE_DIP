@@ -30,7 +30,9 @@ def chctrEXPON(img, a, b):
 	for x in range(1, row):
 		for y in range(1, col):
 			try:
+				#print(img.getpixel((x, y)), end = ' ')
 				val = math.exp(a * img.getpixel((x, y)) + b)
+				#print(val)
 			except OverflowError:
 				val = 255
 			if val >= 255:

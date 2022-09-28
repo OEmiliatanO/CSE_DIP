@@ -47,27 +47,34 @@ class Canv:
 		self.canvasSP = None
 		self.canv_size = None
 		self.filetype = None
+		self.path = None
 
 	def Open(self):
-		fpath = ursel_open_file()
-		if not fpath:
+		self.path = ursel_open_file()
+		if not self.path:
 			return
-		self.filetype = fpath[fpath.rfind('.'):]
+		self.filetype = self.path[self.path.rfind('.'):]
 		if self.img == None:
-			self.img = Image.open(fpath).convert("L")
+			self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.photo = ImageTk.PhotoImage(self.img)
 			self.row, self.col = self.img.size[0], self.img.size[1]
-			self.canv_size = 1000#int(math.sqrt(self.row * self.row + self.col * self.col) + 1)
-			self.canvas = tkinter.Canvas(self.win, width = self.canv_size , height = self.canv_size)
-			self.canvasSP = self.canvas.create_image(self.canv_size//2, self.canv_size//2, anchor = tkinter.CENTER, image = self.photo)
+			self.canv_size = 1820, 980#int(math.sqrt(self.row * self.row + self.col * self.col) + 1)
+			self.canvas = tkinter.Canvas(self.win, width = self.canv_size[0] , height = self.canv_size[1])
+			self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
 			self.canvas.pack()
 		else:
-			self.img = Image.open(fpath).convert("L")
+			self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.updateCanvas()
 
 	def Save(self):
+		if not self.path:
+			print("Error occurs in Canv.py:Save(self):")
+			print("Trying to save nothing.")
+			return
+		self.img.save(self.path)
+	def SaveAs(self):
 		fpath = ursel_save_file(self.filetype)
 		if not fpath:
 			return
@@ -79,7 +86,7 @@ class Canv:
 		self.row, self.col = self.img.size[0], self.img.size[1]
 		self.canvas.delete(self.canvasSP)
 		#self.canvas.config(width = self.row, height = self.col)
-		self.canvasSP = self.canvas.create_image(self.canv_size//2, self.canv_size//2, anchor = tkinter.CENTER, image = self.photo)
+		self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
 
 	def chctrLINEAR(self):
 		ask = dialog(self.win, 2, ["a", "b"])
@@ -128,13 +135,14 @@ class Canv:
 		self.updateCanvas()
 
 	def resize(self):
-		ask = dialog(self.win, 1, ["percentage"])
+		ask = dialog(self.win, 1, ["percentage(%)"])
 		self.win.wait_window(ask.top)
 		per = ask.inputs[0]
 		if per == None:
 			return
 		per = int(per)
-		self.img = resize(self.oimg, per)
+		self.img = resize(self.img, per)
+		self.oimg = self.img
 		self.updateCanvas()
 
 	def grayhhlight(self):
