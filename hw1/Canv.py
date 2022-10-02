@@ -1,8 +1,4 @@
-from chctr import *
-from rotate import *
-from resize import *
-from grayslice import *
-from negative import *
+from imageop import *
 from dialog import *
 import tkinter
 from tkinter import filedialog
@@ -94,6 +90,8 @@ class Canv:
 		a, b = ask.inputs[0], ask.inputs[1]
 		if a == None or b == None:
 			return
+		if a == '':	a = 1
+		if b == '': b = 0
 		a = float(a)
 		b = float(b)
 		self.img = chctrLINEAR(self.img, a, b)
@@ -106,6 +104,8 @@ class Canv:
 		a, b = ask.inputs[0], ask.inputs[1]
 		if a == None or b == None:
 			return
+		if a == '':	a = 1
+		if b == '': b = 0
 		a = float(a)
 		b = float(b)
 		self.img = chctrEXPON(self.img, a, b)
@@ -118,6 +118,8 @@ class Canv:
 		a, b = ask.inputs[0], ask.inputs[1]
 		if a == None or b == None:
 			return
+		if a == '':	a = 1
+		if b == '': b = 0
 		a = float(a)
 		b = float(b)
 		self.img = chctrLOG(self.img, a, b)
@@ -128,8 +130,8 @@ class Canv:
 		ask = dialog(self.win, 1, ["ang"])
 		self.win.wait_window(ask.top)
 		ang = ask.inputs[0]
-		if ang == None:
-			return
+		if ang == None:	return
+		if ang == '': ang = 0
 		ang = float(ang)
 		self.img = rotate(self.oimg, ang, expand = True)
 		self.updateCanvas()
@@ -138,8 +140,8 @@ class Canv:
 		ask = dialog(self.win, 1, ["percentage(%)"])
 		self.win.wait_window(ask.top)
 		per = ask.inputs[0]
-		if per == None:
-			return
+		if per == None:	return
+		if per == '': per = 100
 		per = int(per)
 		self.img = resize(self.img, per)
 		self.oimg = self.img
@@ -151,6 +153,10 @@ class Canv:
 		lb, ub, hhlightV, preserve = ask.inputs[0], ask.inputs[1], ask.inputs[2], ask.inputs[3]
 		if lb == None or ub == None or hhlightV == None or preserve == None:
 			return
+		if lb == '': lb = 0
+		if ub == '': ub = 255
+		if hhlightV == '': hhlightV = 255
+		if preserve == '': preserve = "false"
 		lb = int(lb)
 		ub = int(ub)
 		hhlightV = int(hhlightV)
