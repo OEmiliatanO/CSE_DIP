@@ -8,7 +8,7 @@
 
 # 程式結構
 主要的影像處理函式都在imageop.py這個檔案中，我主要利用PIL中Image物件中的getpixel及putpixel來對圖片的灰階值操作。  
-imageop.py的前三個函式都是調灰階值，分別是線性、指數、取log，接著是graylevel slicing，用使用者給的範圍，將這個範圍的灰階值改成使用者要的值，並根據使用者選擇是否保留其他灰階值。  
+imageop.py的前三個函式都是調灰階值，分別是線性(g(x,y)=af(x,y)+b)、指數(g(x,y)=exp(af(x,y)+b))、取log(g(x,y)=ln(af(x,y)+b))，接著是graylevel slicing，用使用者給的範圍，將這個範圍的灰階值改成使用者要的值，並根據使用者選擇是否保留其他灰階值。  
 再來是負片(我多寫的)，利用g(x,y)=255-f(x,y)得到新的灰階值。  
 最後兩個則是放大縮小及旋轉操作，放大我是用"放大多少percentage"來指定縮放的scale，並且是用bilinear interpolation來縮放；旋轉操作則是用Image物件中的rotate函式處理。  
 
