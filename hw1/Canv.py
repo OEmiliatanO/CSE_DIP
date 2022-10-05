@@ -57,8 +57,8 @@ class Canv:
 			self.row, self.col = self.img.size[0], self.img.size[1]
 			self.canv_size = 1820, 980#int(math.sqrt(self.row * self.row + self.col * self.col) + 1)
 			self.canvas = tkinter.Canvas(self.win, width = self.canv_size[0] , height = self.canv_size[1])
-			#self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
-			self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
+			self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
+			#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
 			self.canvas.grid(row = 0, column = 0)
 		else:
 			self.img = Image.open(self.path).convert("L")
@@ -83,7 +83,8 @@ class Canv:
 		self.row, self.col = self.img.size[0], self.img.size[1]
 		self.canvas.delete(self.canvasSP)
 		#self.canvas.config(width = self.row, height = self.col)
-		self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
+		self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
+		#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
 
 	def chctrLINEAR(self):
 		ask = dialog(self.win, 2, ["a", "b"])
