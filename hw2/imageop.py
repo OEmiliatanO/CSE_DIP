@@ -108,10 +108,8 @@ def auto_level(img):
 	row = img.size[0]
 	col = img.size[1]
 	resIMG = Image.new("L", (row, col))
-	for x in range(row):
-		for y in range(col):
-			val = int(img.getpixel((x, y)))
-			n[val] += 1
+	for val in ravel(img):
+		n[val] += 1
 	for i in range(1, 256):
 		n[i] += n[i - 1]
 	for x in range(row):
