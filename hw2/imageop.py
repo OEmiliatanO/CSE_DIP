@@ -127,7 +127,7 @@ def ravel(img):
 			arr.append(int(img.getpixel((x, y))))
 	return arr
 
-def extract_bit(img, i):
+def bit_slicing(img, i):
 	if i >= 8 or i < 0:
 		print("error occurs in imageop.py:extract_bit:")
 		print("the selected bit is out of range. selected bit:", i, ", but the vaild range is [0, 7].")
@@ -204,10 +204,12 @@ def general_filter(img, mask, rang, regu = True):
 			resIMG.putpixel((x, y), newval)
 	return resIMG
 
-def median_filter(img, rang):
+def median_filter(img, rang = 3):
 	if img == None:
 		print("error occurs in imageop.py:mask:")
 		print("img is None")
+		return None
+	if not (rang & 1):
 		return None
 	row, col = img.size[0], img.size[1]
 	offset = rang // 2

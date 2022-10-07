@@ -26,6 +26,12 @@ def main():
 	editmenu.add_command(label = "resize", command = lambda: canv.resize())
 	editmenu.add_command(label = "gray-level slicing", command = lambda: canv.grayhhlight())
 	editmenu.add_command(label = "negative", command = lambda: canv.negative())
+	editmenu.add_command(label = "auto-level", command = lambda: canv.auto_level())
+	editmenu.add_command(label = "bit slicing", command = lambda: canv.bit_slicing())
+	editmenu.add_command(label = "smooth", command = lambda: canv.average_filter())
+	editmenu.add_command(label = "sharpen", command = lambda: canv.sharpen_filter())
+	editmenu.add_command(label = "median filter", command = lambda: canv.median_filter())
+	editmenu.add_command(label = "Laplacian filter", command = lambda: canv.Laplacian_filter())
 	
 	menubar.add_cascade(label = "File", menu = filemenu)
 	menubar.add_cascade(label = "Edit", menu = editmenu)

@@ -1,4 +1,4 @@
-from imageop import *
+import imageop
 from dialog import *
 import tkinter
 from tkinter import filedialog
@@ -96,8 +96,8 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.img = chctrLINEAR(self.img, a, b)
 		self.oimg = self.img
+		self.img = imageop.chctrLINEAR(self.img, a, b)
 		self.updateCanvas()
 
 	def chctrEXPON(self):
@@ -110,8 +110,8 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.img = chctrEXPON(self.img, a, b)
 		self.oimg = self.img
+		self.img = imageop.chctrEXPON(self.img, a, b)
 		self.updateCanvas()
 
 	def chctrLOG(self):
@@ -124,8 +124,8 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.img = chctrLOG(self.img, a, b)
 		self.oimg = self.img
+		self.img = imageop.chctrLOG(self.img, a, b)
 		self.updateCanvas()
 
 	def rotate(self):
@@ -135,7 +135,8 @@ class Canv:
 		if ang == None:	return
 		if ang == '': ang = 0
 		ang = float(ang)
-		self.img = rotate(self.oimg, ang, expand = True)
+		self.oimg = self.img
+		self.img = imageop.rotate(self.oimg, ang, expand = True)
 		self.updateCanvas()
 
 	def resize(self):
@@ -145,8 +146,8 @@ class Canv:
 		if per == None:	return
 		if per == '': per = 100
 		per = int(per)
-		self.img = resize(self.img, per)
 		self.oimg = self.img
+		self.img = imageop.resize(self.img, per)
 		self.updateCanvas()
 
 	def grayhhlight(self):
@@ -163,11 +164,69 @@ class Canv:
 		ub = int(ub)
 		hhlightV = int(hhlightV)
 		preserve = preserve.lower() in ['true', '1', 'y']
-		self.img = grayhhlight(self.img, lb, ub, hhlightV, preserve)
 		self.oimg = self.img
+		self.img = imageop.grayhhlight(self.img, lb, ub, hhlightV, preserve)
 		self.updateCanvas()
 
 	def negative(self):
-		self.img = negative(self.img)
 		self.oimg = self.img
+		self.img = imageop.negative(self.img)
+		self.updateCanvas()
+
+	def auto_level(self):
+		self.oimg = self.img
+		self.img = imageop.auto_level(self.img)
+		self.updateCanvas()
+	
+	def bit_slicing(self):
+		ask = dialog(self.win, 1, ["which bit"])
+		self.win.wait_window(ask.top)
+		i = ask.inputs[0]
+		if i == None: return
+		if i == "": i = 7
+		i = int(i)
+		if i > 7 or i < 0: return
+		self.oimg = self.img
+		self.img = imageop.bit_slicing(self.img, i)
+		self.updateCanvas()
+
+	def average_filter(self):
+		ask = dialog(self.win, 1, ["degree"])
+		self.win.wait_window(ask.top)
+		r = ask.inputs[0]
+		if r == None: return
+		if r == "": r = 3
+		r = int(r)
+		if r < 0: return
+		self.oimg = self.img
+		self.img = imageop.average_filter(self.img, r)
+		self.updateCanvas()
+	
+	def sharpen_filter(self):
+		ask = dialog(self.win, 1, ["degree"])
+		self.win.wait_window(ask.top)
+		k = ask.inputs[0]
+		if k == None: return
+		if k == "": k = 1
+		k = int(k)
+		if k < 0: return
+		self.oimg = self.img
+		self.img = imageop.sharpen_filter(self.img, k)
+		self.updateCanvas()
+	
+	def median_filter(self):
+		ask = dialog(self.win, 1, ["size of region"])
+		self.win.wait_window(ask.top)
+		r = ask.inputs[0]
+		if r == None: return
+		if r == "": r = 3
+		r = int(r)
+		if r < 0: return
+		self.oimg = self.img
+		self.img = imageop.median_filter(self.img, r)
+		self.updateCanvas()
+	
+	def Laplacian_filter(self):
+		self.oimg = self.img
+		self.img = imageop.Laplacian_filter(self.img)
 		self.updateCanvas()
