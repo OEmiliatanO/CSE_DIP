@@ -7,10 +7,11 @@ import matplotlib.pyplot as plt
 
 def ursel_open_file():
 	fname = filedialog.askopenfilename(initialdir = "./", title = "Select a Image", filetypes = [
-		("image", "*.jpg *.png *.tif *.raw"),
+		("image", "*.jpg *.png *.tif *.tiff *.raw"),
 		("jpg", "*.jpg"),
 		("png", "*.png"),
 		("tif", "*.tif"),
+		("tiff", "*.tiff"),
 		("raw", "*.raw"),
 	])
 	return fname
@@ -21,6 +22,7 @@ def ursel_save_file(defaultFile):
 		("jpg", ".jpg"),
 		("png", ".png"),
 		("tif", ".tif"),
+		("tiff", ".tiff")
 	])
 	return fname
 
@@ -190,8 +192,8 @@ class Canv:
 		self.img = imageop.auto_level(self.img)
 		self.updateCanvas()
 		hist1, hist2 = imageop.ravel(self.oimg), imageop.ravel(self.img)
-		plt.hist(hist1, bins = 'auto', alpha = 0.5, label = 'original')
-		plt.hist(hist2, bins = 'auto', alpha = 0.5, label = 'after')
+		plt.hist(hist1, bins = 256, alpha = 0.5, label = 'original')
+		plt.hist(hist2, bins = 256, alpha = 0.5, label = 'after')
 		plt.legend(loc = 'best')
 		plt.show()
 	

@@ -2,12 +2,14 @@ import PIL
 import imageop
 import matplotlib.pyplot as plt
 #img = PIL.Image.open("./testdata/elaine.512.tiff").convert("L")
-#img = PIL.Image.open("./testdata/lenna_gray.tif").convert("L")
+img = PIL.Image.open("./testdata/lenna_gray.tif").convert("L")
 
-with open("./testdata/pirate_a.raw", 'rb') as f:
-	img = PIL.Image.frombytes("L", (512, 512), f.read(), 'raw')
+#with open("./testdata/pirate_a.raw", 'rb') as f:
+#	img = PIL.Image.frombytes("L", (512, 512), f.read(), 'raw')
 
 img.show()
+plt.hist(imageop.ravel(img), bins = 256)
+plt.show()
 #newimg = imageop.average_filter(img, 3)
 #newimg = imageop.general_filter(img, [[1,1,1],[1,1,1],[1,1,1]], 3)
 #newimg = imageop.extract_bit(img, i)
