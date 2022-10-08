@@ -236,12 +236,12 @@ def Laplacian_filter(img):
 		print("img is None")
 		return None
 	row, col = img.size[0], img.size[1]
-	m = [[0,-1,0],
-		 [-1,4,-1],
-		 [0,-1,0]]
+	m = [[1,1,1],
+		 [1,-8,1],
+		 [1,1,1]]
 	LM = general_filter(img, m, 3, False)
 	resIMG = Image.new("L", (row, col))
 	for x in range(row):
 		for y in range(col):
-			resIMG.putpixel((x, y), img.getpixel((x, y)) + LM.getpixel((x, y)))
+			resIMG.putpixel((x, y), img.getpixel((x, y)) - LM.getpixel((x, y)))
 	return resIMG

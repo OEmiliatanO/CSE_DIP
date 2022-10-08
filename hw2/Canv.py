@@ -56,6 +56,8 @@ class Canv:
 			if self.filetype == ".raw":
 				with open(self.path, 'rb') as f:
 					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
+				self.filetype = ".jpg"
+				self.path = self.path[:self.path.rfind('.')] + self.filetype
 			else: self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.photo = ImageTk.PhotoImage(self.img)
@@ -69,6 +71,8 @@ class Canv:
 			if self.filetype == ".raw":
 				with open(self.path, 'rb') as f:
 					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
+				self.filetype = ".jpg"
+				self.path = self.path[:self.path.rfind('.')] + self.filetype
 			else: self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.updateCanvas()
@@ -80,10 +84,10 @@ class Canv:
 			return
 		self.img.save(self.path)
 	def SaveAs(self):
-		fpath = ursel_save_file(self.filetype)
-		if not fpath:
+		self.path = ursel_save_file(self.filetype)
+		if not self.path:
 			return
-		self.img.save(fpath)
+		self.img.save(self.path)
 
 	def updateCanvas(self):
 		self.photo = ImageTk.PhotoImage(self.img)
