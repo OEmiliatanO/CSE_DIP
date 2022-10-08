@@ -21,14 +21,14 @@ imageop.py的前三個函式都是調灰階值，分別是線性(g(x,y)=af(x,y)+
 
 ## HW2
 這次在imageop.py中新增auto_level(img)、ravel(img)、bit_slicing(img, i)、general_filter(img, mask, rang, regu)、average_filter(img, rang)、sharpen_filter(img, k)、median_filter(img, rang)、Laplacian_filter(img)。  
-auto_level(img)就是histogram equalization，首先統計各灰階值出現的次數，接著計算prefix sum，再根據input的值對應到prefix sum、乘上(L-1)/(MN)就可以得到新的灰階值。  
-ravel(img)是auto_level(img)以及畫histogram的輔助函式，用來將圖片的灰階值轉成一維的list。  
-bit_slicing(img, i)利用g(x, y) = f(x, y) & (1 << i)這個公式來獲得圖片的第i個bit。  
-general_filter(img, mask, rang, regu)是一個spatial filter，可以自訂mask的權重、大小，以及是否要將結果除以權重總和。這個函式主要是輔助average_filter、Laplacian_filter。  
-average_filter(img, rang)是一個mask權重全為1的spatial filter，可以自訂mask的大小。  
-sharpen_filter(img, k)是利用unsharp masking的影像銳化函式，當k=1時，就是unsharp masking，當k>1時，就是highboost filtering。  
-median_filter(img, rang)會找出範圍中的中值，並更新g(x,y)。  
-Laplacian_filter(img)利用Laplacian mask來銳化影像。mask為  
+- auto_level(img)就是histogram equalization，首先統計各灰階值出現的次數，接著計算prefix sum，再根據input的值對應到prefix sum、乘上(L-1)/(MN)就可以得到新的灰階值。  
+- ravel(img)是auto_level(img)以及畫histogram的輔助函式，用來將圖片的灰階值轉成一維的list。  
+- bit_slicing(img, i)利用g(x, y) = f(x, y) & (1 << i)這個公式來獲得圖片的第i個bit。  
+- general_filter(img, mask, rang, regu)是一個spatial filter，可以自訂mask的權重、大小，以及是否要將結果除以權重總和。這個函式主要是輔助average_filter、Laplacian_filter。  
+- average_filter(img, rang)是一個mask權重全為1的spatial filter，可以自訂mask的大小。  
+- sharpen_filter(img, k)是利用unsharp masking的影像銳化函式，當k=1時，就是unsharp masking，當k>1時，就是highboost filtering。  
+- median_filter(img, rang)會找出範圍中的中值，並更新g(x,y)。  
+- Laplacian_filter(img)利用Laplacian mask來銳化影像。mask為  
 [1, 1, 1]  
 [1,-8, 1]  
 [1, 1, 1]  
