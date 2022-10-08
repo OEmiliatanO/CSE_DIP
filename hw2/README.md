@@ -2,6 +2,8 @@
 程式需要的package都在requirement.txt裡了。用下面的指令就可以安裝。  
 ```pip3 install -r requirements.txt```
 
+! tkinter needs another step, ```sudo apt install python3-tk```  
+
 我Python的版本為"3.10.6"。pip的版本為"22.2.2"。  
 
 用這個指令可以打開程式```python3 hw1.py```。
