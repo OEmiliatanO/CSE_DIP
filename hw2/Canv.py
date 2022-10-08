@@ -3,13 +3,15 @@ from dialog import *
 import tkinter
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
 
 def ursel_open_file():
 	fname = filedialog.askopenfilename(initialdir = "./", title = "Select a Image", filetypes = [
-		("image", "*.jpg *.png *.tif"),
+		("image", "*.jpg *.png *.tif *.raw"),
 		("jpg", "*.jpg"),
 		("png", "*.png"),
 		("tif", "*.tif"),
+		("raw", "*.raw"),
 	])
 	return fname
 
@@ -51,7 +53,10 @@ class Canv:
 			return
 		self.filetype = self.path[self.path.rfind('.'):]
 		if self.img == None:
-			self.img = Image.open(self.path).convert("L")
+			if self.filetype == ".raw":
+				with open(self.path, 'rb') as f:
+					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
+			else: self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.photo = ImageTk.PhotoImage(self.img)
 			self.row, self.col = self.img.size[0], self.img.size[1]
@@ -61,7 +66,10 @@ class Canv:
 			#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
 			self.canvas.grid(row = 0, column = 0)
 		else:
-			self.img = Image.open(self.path).convert("L")
+			if self.filetype == ".raw":
+				with open(self.path, 'rb') as f:
+					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
+			else: self.img = Image.open(self.path).convert("L")
 			self.oimg = self.img
 			self.updateCanvas()
 
@@ -177,6 +185,11 @@ class Canv:
 		self.oimg = self.img
 		self.img = imageop.auto_level(self.img)
 		self.updateCanvas()
+		hist1, hist2 = imageop.ravel(self.oimg), imageop.ravel(self.img)
+		plt.hist(hist1, bins = 'auto', alpha = 0.5, label = 'original')
+		plt.hist(hist2, bins = 'auto', alpha = 0.5, label = 'after')
+		plt.legend(loc = 'best')
+		plt.show()
 	
 	def bit_slicing(self):
 		ask = dialog(self.win, 1, ["which bit"])
