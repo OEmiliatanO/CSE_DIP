@@ -99,6 +99,10 @@ class Canv:
 		#self.canvas.config(width = self.row, height = self.col)
 		self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
 		#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
+	
+	def undo(self):
+		self.oimg, self.img = self.img, self.oimg
+		self.updateCanvas()
 
 	def chctrLINEAR(self):
 		ask = dialog(self.win, 2, ["a", "b"])

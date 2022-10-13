@@ -22,6 +22,7 @@ def main():
 	
 	editmenu.add_cascade(label = "change constrast", menu = chctrmenu)
 
+	editmenu.add_command(label = "undo", command = lambda: canv.undo())
 	editmenu.add_command(label = "rotate", command = lambda: canv.rotate())
 	editmenu.add_command(label = "resize", command = lambda: canv.resize())
 	editmenu.add_command(label = "gray-level slicing", command = lambda: canv.grayhhlight())
