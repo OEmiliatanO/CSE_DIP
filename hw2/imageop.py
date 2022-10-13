@@ -6,7 +6,7 @@ def chctrLINEAR(img, a = 1, b = 0):
 	if img == None:
 		print("error occur in imageop.py:chctrLINEAR(img, a, b):")
 		print("img is None.")
-		return None
+		return img
 
 	row = img.size[0]
 	col = img.size[1]
@@ -23,7 +23,7 @@ def chctrEXPON(img, a = 1, b = 0):
 	if img == None:
 		print("error occur in imageop.py:chctrEXPON(img, a, b):")
 		print("img is None.")
-		return None
+		return img
 
 	row = img.size[0]
 	col = img.size[1]
@@ -45,7 +45,7 @@ def chctrLOG(img, a = 1, b = 0):
 	if img == None:
 		print("error occur in imageop.py:chctrLOG(img, a, b):")
 		print("img is None.")
-		return None
+		return img
 	if b <= 1:
 		print("error occur in imageop.py:chctrLOG(img, a, b):")
 		print("b must be bigger 1.")
@@ -66,7 +66,7 @@ def grayhhlight(img, lb = 0, ub = 255, hhlightV = 255, preserve = True):
 	if img == None:
 		print("error occurs in imageop.py:grayhhlight(img, lb, ub, preserve):")
 		print("img is None.")
-		return None
+		return img
 	if lb > ub:
 		print("error occurs in imageop.py:grayhhlight(img, lb, ub, preserve):")
 		print("lower bound is bigger than upper bound.")
@@ -88,7 +88,7 @@ def negative(img):
 	if img == None:
 		print("error occurs in imageop.py:negative:")
 		print("img is None")
-		return None
+		return img
 	row = img.size[0]
 	col = img.size[1]
 	resIMG = Image.new("L", (row, col))
@@ -131,11 +131,11 @@ def bit_slicing(img, i):
 	if i >= 8 or i < 0:
 		print("error occurs in imageop.py:extract_bit:")
 		print("the selected bit is out of range. selected bit:", i, ", but the vaild range is [0, 7].")
-		return None
+		return img
 	if img == None:
 		print("error occurs in imageop.py:extract_bit:")
 		print("img is None")
-		return None
+		return img
 	bmask = [255 & (1 << j) for j in range(8)]
 	row = img.size[0]
 	col = img.size[1]
@@ -148,7 +148,7 @@ def bit_slicing(img, i):
 
 def average_filter(img, rang = 3):
 	if not (rang & 1):
-		return None
+		return img
 	if img == None:
 		print("error occurs in imageop.py:mask:")
 		print("img is None")
@@ -170,15 +170,15 @@ def sharpen_filter(img, k = 1):
 
 def general_filter(img, mask, rang, regu = True):
 	if not (rang & 1):
-		return None
+		return img
 	if img == None:
 		print("error occurs in imageop.py:mask:")
 		print("img is None")
-		return None
+		return img
 	if len(mask) == 0 or len(mask) != rang or len(mask[0]) != rang:
 		print("error occurs in imageop.py:mask:")
 		print("the size of mask isn't right")
-		return None
+		return img
 
 	offset = rang // 2
 	row, col = img.size[0], img.size[1]
@@ -208,9 +208,9 @@ def median_filter(img, rang = 3):
 	if img == None:
 		print("error occurs in imageop.py:mask:")
 		print("img is None")
-		return None
+		return img
 	if not (rang & 1):
-		return None
+		return img
 	row, col = img.size[0], img.size[1]
 	offset = rang // 2
 	resIMG = Image.new("L", (row, col))
@@ -234,7 +234,7 @@ def Laplacian_filter(img):
 	if img == None:
 		print("error occurs in imageop.py:Laplacian_mask:")
 		print("img is None")
-		return None
+		return img
 	row, col = img.size[0], img.size[1]
 	m = [[1,1,1],
 		 [1,-8,1],
