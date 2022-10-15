@@ -27,24 +27,24 @@ def ursel_save_file(defaultFile):
 	return fname
 
 class Canv:
-	"""
-	chctrLINEAR(img, a, b)
-	chctrEXPON(img, a, b)
-	chctrLOG(img, a, b)
-	rotate(img, ang, expand)
-	resize(img, per)
-	grayhhlight(img, lb, rb, hhlightV, preserve)
-	negative(img)
-	"""
 	def __init__(self, win):
-		self.canvas = None
-		self.img = None
-		self.oimg = None
-		self.photo = None
 		self.win = win
-		self.row = None
-		self.col = None
-		self.canvasSP = None
+		
+		self.canvasShow = None
+		self.canvasOper = None
+		
+		self.imgShow = None
+		self.imgOper = None
+		
+		self.photoShow = None
+		self.photoOper = None
+		
+		self.rowShow, self.colShow = None, None
+		self.rowOper, self.colOper = None, None
+		
+		self.canvasShowSP = None
+		self.canvasOperSP = None
+
 		self.canv_size = None
 		self.filetype = None
 		self.path = None
@@ -54,54 +54,82 @@ class Canv:
 		if not self.path:
 			return
 		self.filetype = self.path[self.path.rfind('.'):]
-		if self.img == None:
+		if self.imgShow == None:
 			if self.filetype == ".raw":
 				with open(self.path, 'rb') as f:
-					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
-				self.filetype = ".jpg"
+					self.imgShow = Image.frombytes("L", (512, 512), f.read(), 'raw')
+				self.filetype = ".png"
 				self.path = self.path[:self.path.rfind('.')] + self.filetype
-			else: self.img = Image.open(self.path).convert("L")
-			self.oimg = self.img
-			self.photo = ImageTk.PhotoImage(self.img)
-			self.row, self.col = self.img.size[0], self.img.size[1]
-			self.canv_size = 1820, 980#int(math.sqrt(self.row * self.row + self.col * self.col) + 1)
-			self.canvas = tkinter.Canvas(self.win, width = self.canv_size[0] , height = self.canv_size[1])
-			self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
-			#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
-			self.canvas.grid(row = 0, column = 0)
+			else: self.imgShow = Image.open(self.path).convert("L")
+			self.imgOper = self.imgShow.copy()
+			
+			self.photoShow = ImageTk.PhotoImage(self.imgShow)
+			self.photoOper = ImageTk.PhotoImage(self.imgOper)
+			
+			self.rowShow, self.colShow = self.imgShow.size[0], self.imgShow.size[1]
+			self.rowOper, self.colOper = self.imgOper.size[0], self.imgOper.size[1]
+			
+			self.canvShow_size = self.imgShow.size
+			self.canvOper_size = self.imgOper.size
+
+			self.canvasShow = tkinter.Canvas(self.win, width = self.canvShow_size[0] , height = self.canvShow_size[1])
+			self.canvasOper = tkinter.Canvas(self.win, width = self.canvOper_size[0] , height = self.canvOper_size[1])
+
+			self.canvasShowSP = self.canvasShow.create_image(0, 0, anchor = tkinter.NW, image = self.photoShow)
+			self.canvasOperSP = self.canvasOper.create_image(0, 0, anchor = tkinter.NW, image = self.photoOper)
+
+			self.canvasShow.grid(row=0,column=0)
+			self.canvasOper.grid(row=0,column=1)
 		else:
 			if self.filetype == ".raw":
 				with open(self.path, 'rb') as f:
-					self.img = Image.frombytes("L", (512, 512), f.read(), 'raw')
+					self.imgShow = Image.frombytes("L", (512, 512), f.read(), 'raw')
 				self.filetype = ".jpg"
 				self.path = self.path[:self.path.rfind('.')] + self.filetype
-			else: self.img = Image.open(self.path).convert("L")
-			self.oimg = self.img
+			else: self.imgShow = Image.open(self.path).convert("L")
+			self.imgOper = self.imgShow.copy()
 			self.updateCanvas()
 
-	def Save(self):
+	def Save(self, which = "oper"):
 		if not self.path:
 			print("Error occurs in Canv.py:Save(self):")
 			print("Trying to save nothing.")
 			return
-		self.img.save(self.path)
-	def SaveAs(self):
+		if which == "oper":
+			self.imgOper.save(self.path)
+		elif which == "show":
+			self.imgShow.save(self.path)
+
+	def SaveAs(self, which = "oper"):
 		self.path = ursel_save_file(self.filetype)
 		if not self.path:
 			return
-		self.img.save(self.path)
+		if which == "oper":
+			self.imgOper.save(self.path)
+		elif which == "show":
+			self.imgShow.save(self.path)
 
 	def updateCanvas(self):
-		self.photo = ImageTk.PhotoImage(self.img)
+		self.photoShow = ImageTk.PhotoImage(self.imgShow)
+		self.photoOper = ImageTk.PhotoImage(self.imgOper)
 		#self.img.show()
-		self.row, self.col = self.img.size[0], self.img.size[1]
-		self.canvas.delete(self.canvasSP)
+		self.rowShow, self.colShow = self.imgShow.size[0], self.imgShow.size[1]
+		self.rowOper, self.colOper = self.imgOper.size[0], self.imgOper.size[1]
+		self.canvasShow.delete(self.canvasShowSP)
+		self.canvasOper.delete(self.canvasOperSP)
 		#self.canvas.config(width = self.row, height = self.col)
-		self.canvasSP = self.canvas.create_image(self.canv_size[0]//2, self.canv_size[1]//2, anchor = tkinter.CENTER, image = self.photo)
+		self.canvasShowSP = self.canvasShow.create_image(0, 0, anchor = tkinter.NW, image = self.photoShow)
+		self.canvasOperSP = self.canvasOper.create_image(0, 0, anchor = tkinter.NW, image = self.photoOper)
 		#self.canvasSP = self.canvas.create_image(100, 10, anchor = tkinter.NW, image = self.photo)
 	
-	def undo(self):
-		self.oimg, self.img = self.img, self.oimg
+	def swap(self):
+		self.imgShow, self.imgOper = self.imgOper, self.imgShow
+		self.updateCanvas()
+	def copyToOper(self):
+		self.imgOper = self.imgShow.copy()
+		self.updateCanvas()
+	def copyToShow(self):
+		self.imgShow = self.imgOper.copy()
 		self.updateCanvas()
 
 	def chctrLINEAR(self):
@@ -114,8 +142,7 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.oimg = self.img
-		self.img = imageop.chctrLINEAR(self.img, a, b)
+		self.imgOper = imageop.chctrLINEAR(self.imgShow, a, b)
 		self.updateCanvas()
 
 	def chctrEXPON(self):
@@ -128,8 +155,7 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.oimg = self.img
-		self.img = imageop.chctrEXPON(self.img, a, b)
+		self.imgOper = imageop.chctrEXPON(self.imgShow, a, b)
 		self.updateCanvas()
 
 	def chctrLOG(self):
@@ -142,8 +168,7 @@ class Canv:
 		if b == '': b = 0
 		a = float(a)
 		b = float(b)
-		self.oimg = self.img
-		self.img = imageop.chctrLOG(self.img, a, b)
+		self.imgOper = imageop.chctrLOG(self.imgShow, a, b)
 		self.updateCanvas()
 
 	def rotate(self):
@@ -153,8 +178,7 @@ class Canv:
 		if ang == None:	return
 		if ang == '': ang = 0
 		ang = float(ang)
-		self.oimg = self.img
-		self.img = imageop.rotate(self.oimg, ang, expand = True)
+		self.imgOper = imageop.rotate(self.imgShow, ang, expand = True)
 		self.updateCanvas()
 
 	def resize(self):
@@ -164,8 +188,7 @@ class Canv:
 		if per == None:	return
 		if per == '': per = 100
 		per = int(per)
-		self.oimg = self.img
-		self.img = imageop.resize(self.img, per)
+		self.imgOper = imageop.resize(self.imgShow, per)
 		self.updateCanvas()
 
 	def grayhhlight(self):
@@ -182,20 +205,17 @@ class Canv:
 		ub = int(ub)
 		hhlightV = int(hhlightV)
 		preserve = preserve.lower() in ['true', '1', 'y']
-		self.oimg = self.img
-		self.img = imageop.grayhhlight(self.img, lb, ub, hhlightV, preserve)
+		self.imgOper = imageop.grayhhlight(self.imgShow, lb, ub, hhlightV, preserve)
 		self.updateCanvas()
 
 	def negative(self):
-		self.oimg = self.img
-		self.img = imageop.negative(self.img)
+		self.imgOper = imageop.negative(self.imgShow)
 		self.updateCanvas()
 
 	def auto_level(self):
-		self.oimg = self.img
-		self.img = imageop.auto_level(self.img)
+		self.imgOper = imageop.auto_level(self.imgShow)
 		self.updateCanvas()
-		hist1, hist2 = imageop.ravel(self.oimg), imageop.ravel(self.img)
+		hist1, hist2 = imageop.ravel(self.imgShow), imageop.ravel(self.imgOper)
 		plt.hist(hist1, bins = 256, alpha = 0.5, label = 'original')
 		plt.hist(hist2, bins = 256, alpha = 0.5, label = 'after')
 		plt.legend(loc = 'best')
@@ -209,8 +229,7 @@ class Canv:
 		if i == "": i = 7
 		i = int(i)
 		if i > 7 or i < 0: return
-		self.oimg = self.img
-		self.img = imageop.bit_slicing(self.img, i)
+		self.imgOper = imageop.bit_slicing(self.imgShow, i)
 		self.updateCanvas()
 
 	def average_filter(self):
@@ -221,8 +240,7 @@ class Canv:
 		if r == "": r = 3
 		r = int(r)
 		if r < 0: return
-		self.oimg = self.img
-		self.img = imageop.average_filter(self.img, r)
+		self.imgOper = imageop.average_filter(self.imgShow, r)
 		self.updateCanvas()
 	
 	def sharpen_filter(self):
@@ -233,8 +251,7 @@ class Canv:
 		if k == "": k = 1
 		k = int(k)
 		if k < 0: return
-		self.oimg = self.img
-		self.img = imageop.sharpen_filter(self.img, k)
+		self.imgOper = imageop.sharpen_filter(self.imgShow, k)
 		self.updateCanvas()
 	
 	def median_filter(self):
@@ -245,11 +262,9 @@ class Canv:
 		if r == "": r = 3
 		r = int(r)
 		if r < 0: return
-		self.oimg = self.img
-		self.img = imageop.median_filter(self.img, r)
+		self.imgOper = imageop.median_filter(self.imgShow, r)
 		self.updateCanvas()
 	
 	def Laplacian_filter(self):
-		self.oimg = self.img
-		self.img = imageop.Laplacian_filter(self.img)
+		self.imgOper = imageop.Laplacian_filter(self.imgShow)
 		self.updateCanvas()
